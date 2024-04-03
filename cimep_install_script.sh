@@ -30,7 +30,7 @@ DOSSIER_SCRIPT=$DOSSIER_INSTALL$SCRIPT
 ZIP_SCRIPT="cimep-script.zip"
 
 
-CERTIFICATS="certificats.zip"
+CERTIFICATS="certificats.tar"
 PHPVERSION="7.3"
 SITE_NAME="crmtest.fr"
 
@@ -57,7 +57,7 @@ apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,acpu,bz2,curl,mbstring,intl,j
 
 #2) Extraire l'ensemble des fichiers dans un repertoire (exemple : /var/www/cime-p-node)
 
-unzip ./$CERTIFICATS -d /etc/apache2/
+tar -xf ./$CERTIFICATS -d /etc/apache2/
 
 mkdir $DOSSIER_SITE
 unzip ./$ZIP_SITE -d $DOSSIER_SITE
@@ -270,7 +270,7 @@ a2enmod ssl
 a2enmod rewrite
 a2enmod headers
 a2ensite $SITE.conf
-systemctl restart apache2
+systemctl restart apache2.service
 
 # Fixer les droits :
 
@@ -279,7 +279,7 @@ chmod -R 775 /var/www/$SITE
 
 # Rajouter la ligne suivante dans le fichier /etc/hosts (adapter l'url) :
 
-echo "192.168.40.10   $SITE_NAME $SITE" >> /etc/hosts
+echo "127.0.0.1   $SITE_NAME $SITE" >> /etc/hosts
 
 # *Ceci afin que le mode de maintenance ne bloque pas les requêtes du serveur vers lui même*
 # Installation des dépendances requise pour cime-p
