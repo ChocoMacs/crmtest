@@ -131,7 +131,7 @@ DIR_LARGE_FILES=/var/www/crmtest/var/media/large_files
 DIR_DRC_AUTO=/var/www/crmtest/var/media/large_files
 DIR_DRM=/var/www/crmtest/var/media/drm
 UPDATE_CREDENTIAL=null
-"
+" > $DOSSIER_SITE/.env
 
 #3-b) Installer le lanceur automatique :
 
