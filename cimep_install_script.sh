@@ -87,7 +87,51 @@ echo '{
   "main_server_ip": "127.0.0.1"
 }' > config.json
 
+echo "
+# Real environment variables win over .env files.
+#
+# DO NOT DEFINE PRODUCTION SECRETS IN THIS FILE NOR IN ANY OTHER COMMITTED FILES.
+#
+# Run 'composer dump-env prod' to compile .env files for production use (requires symfony/flex >=1.2).
+# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 
+
+###> symfony/framework-bundle ###
+APP_ENV=dev
+APP_SECRET=23d7cb8ed593909b2bcd5836b8dc8a57
+#TRUSTED_PROXIES=127.0.0.1,127.0.0.2
+#TRUSTED_HOSTS='^localhost|example\.com$'
+###< symfony/framework-bundle ###
+
+###> doctrine/doctrine-bundle ###
+# Format described at https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
+# For an SQLite database, use: 'sqlite:///%kernel.project_dir%/var/data.db'
+# Configure your db driver and server_version in config/packages/doctrine.yaml
+DATABASE_URL=pgsql://db_user:db_password@127.0.0.1:5432/db_name
+###< doctrine/doctrine-bundle ###
+
+###> symfony/swiftmailer-bundle ###
+# For Gmail as a transport, use: 'gmail://username:password@localhost'
+# For a generic SMTP server, use: 'smtp://localhost:25?encryption=&auth_mode='
+# Delivery is disabled by default via 'null://localhost'
+MAILER_URL=smtp://localhost
+###< symfony/swiftmailer-bundle ###
+
+APP_LOCALE=fr
+EMAIL_ERROR=admin@crmtest.fr
+MAILER_FROM=no-reply@crmtest
+MAILER_SENDER=CIME-P
+HOST=crmtest.fr
+SERVER_NODE_LOCATION=app.crmtest.fr
+SERVER_NODE_PASSWORD=null
+SERVER_FTP_LOCATION=ftp.crmtest.fr
+SERVER_FTP_FULL_ENABLE=true
+DIR_FTP=/home/ftp
+DIR_LARGE_FILES=/var/www/crmtest/var/media/large_files
+DIR_DRC_AUTO=/var/www/crmtest/var/media/large_files
+DIR_DRM=/var/www/crmtest/var/media/drm
+UPDATE_CREDENTIAL=null
+"
 
 #3-b) Installer le lanceur automatique :
 
