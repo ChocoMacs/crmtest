@@ -17,7 +17,7 @@ fi
 ######### VARIABLE ##############
 DOSSIER_INSTALL="/var/www/"
 
-DOSSIER_SITE=$DOSSIER_INSTALL"crmtest"
+DOSSIER_SITE=$DOSSIER_INSTALL"crmtest2"
 ZIP_SITE="cimep.zip"
 
 DOSSIER_NODE=$DOSSIER_INSTALL"crmtest-node"
