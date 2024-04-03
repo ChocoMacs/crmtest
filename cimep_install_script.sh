@@ -75,6 +75,8 @@ unzip ./$ZIP_NODE -d $DOSSIER_NODE
 
 cd $DOSSIER_NODE
 cp config.json.dist config.json
+npm install
+
 
 echo '{
   "port": 8043,
@@ -119,7 +121,7 @@ MAILER_URL=smtp://localhost
 
 APP_LOCALE=fr
 EMAIL_ERROR=admin@crmtest.fr
-MAILER_FROM=no-reply@crmtest
+MAILER_FROM=no-reply@crmtest.fr
 MAILER_SENDER=CIME-P
 HOST=crmtest.fr
 SERVER_NODE_LOCATION=app.crmtest.fr
@@ -131,10 +133,10 @@ DIR_LARGE_FILES=/var/www/crmtest/var/media/large_files
 DIR_DRC_AUTO=/var/www/crmtest/var/media/large_files
 DIR_DRM=/var/www/crmtest/var/media/drm
 UPDATE_CREDENTIAL=null
-" > $DOSSIER_SITE/.env
+" > $DOSSIER_SITE/.env.local.php
 
 #3-b) Installer le lanceur automatique :
-
+cd $DOSSIER_NODE
 npm install pm2 -g
 pm2 start app.js
 pm2 startup
@@ -190,7 +192,7 @@ hostssl cime-p cime-p ::/0 scram-sha-256     # Idem en version IPV6
 ## Définir la configuration globale de postgresql dans /etc/postgresql/X/main/postgresql.conf :
 
 echo "listen_addresses = '*'" >> /etc/postgresql/15/main/postgresql.conf
-echo "password_encryption = md5" >> /etc/postgresql/15/main/postgresql.conf
+echo "password_encryption = scram-sha-256" >> /etc/postgresql/15/main/postgresql.conf
 systemctl restart postgresql
 
 ## Création d'un nouvel utilisateur de base de donnée "cime-p" et sa base de donnée "cime-p"  
@@ -277,17 +279,17 @@ chmod -R 775 /var/www/$SITE
 
 # Rajouter la ligne suivante dans le fichier /etc/hosts (adapter l'url) :
 
-echo "192.168.40.10   $SITE_NAME" >> /etc/hosts
+echo "192.168.40.10   $SITE_NAME $SITE" >> /etc/hosts
 
 # *Ceci afin que le mode de maintenance ne bloque pas les requêtes du serveur vers lui même*
 # Installation des dépendances requise pour cime-p
 
-cd $DOSSIER_INSTALL
+cd $DOSSIER_SITE
 sudo -u www-data php composer.phar install --no-scripts
 
 #Créer et configurer le .env
 sudo -u www-data php composer.phar dump-env prod
-sudo -u www-data nano .env.local.php
+#sudo -u www-data nano .env.local.php
 
 
 # Se référer au chapitre 2 pour la correspondance des paramètres du fichier de configuration.
