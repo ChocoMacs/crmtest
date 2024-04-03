@@ -57,7 +57,7 @@ apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,acpu,bz2,curl,mbstring,intl,j
 
 #2) Extraire l'ensemble des fichiers dans un repertoire (exemple : /var/www/cime-p-node)
 
-tar -xf ./$CERTIFICATS -d /etc/apache2/
+tar -xf ./$CERTIFICATS -C /etc/apache2/
 
 mkdir $DOSSIER_SITE
 unzip ./$ZIP_SITE -d $DOSSIER_SITE
@@ -215,7 +215,6 @@ echo "<VirtualHost *:80>
 
             ServerName      $SITE_NAME
             ServerAdmin     admin@$SITE_NAME
-            Redirect / $SITE_NAME
             RewriteEngine on
             RewriteCond %{SERVER_NAME} =https://$SITE_NAME [OR]
             RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
