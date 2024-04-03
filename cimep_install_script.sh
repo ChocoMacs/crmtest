@@ -42,7 +42,7 @@ apt install  nodejs npm  -y
 wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 apt update
-apt install unoconv zip acl pdftk
+apt install unoconv zip acl pdftk -y
 apt install php$PHPVERSION -y
 apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,acpu,bz2,curl,mbstring,intl,json,common,gd,xml}} -y
 
@@ -130,14 +130,14 @@ host all all 127.0.0.1/32 scram-sha-256  # Autoriser tout les utilisateurs postg
 host all all ::1/128 scram-sha-256       # Idem en version IPV6
 hostssl cime-p cime-p 0.0.0.0/0 scram-sha-256  # Autoriser seulement l'utilisateur cime-p à se connecter sur la base cime-p en TCP-IP protégé par SSL depuis l'exterieur. Nécessite de configurer le champ listen_address (voir ci-dessous)
 hostssl cime-p cime-p ::/0 scram-sha-256     # Idem en version IPV6
-" >> /etc/postgresql/$PSQL_VERSION/main/pg_hba.conf
+" >> /etc/postgresql/15/main/pg_hba.conf
 
 
 
 ## Définir la configuration globale de postgresql dans /etc/postgresql/X/main/postgresql.conf :
 
-echo "listen_addresses = '*'" >> /etc/postgresql/$PSQL_VERSION/main/postgresql.conf
-echo "password_encryption = md5" >> /etc/postgresql/$PSQL_VERSION/main/postgresql.conf
+echo "listen_addresses = '*'" >> /etc/postgresql/15/main/postgresql.conf
+echo "password_encryption = md5" >> /etc/postgresql/15/main/postgresql.conf
 systemctl restart postgresql
 
 ## Création d'un nouvel utilisateur de base de donnée "cime-p" et sa base de donnée "cime-p"  
@@ -150,8 +150,8 @@ systemctl restart postgresql
 ## Modifier les deux php.ini /etc/php/X/apache2/php.ini et /etc/php/X/cli/php.ini
 
 
-sed -i 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/$PHPVERSION/apache2/php.ini
-sed -i 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/$PHPVERSION/cli/php.ini
+sed -i 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/7.3/apache2/php.ini
+sed -i 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/7.3/cli/php.ini
 
 
 
