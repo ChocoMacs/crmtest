@@ -17,34 +17,42 @@ fi
 ######### VARIABLE ##############
 DOSSIER_INSTALL="/var/www/"
 
-DOSSIER_SITE=$DOSSIER_INSTALL"crmtest2"
+SITE="crmtest"
+DOSSIER_SITE=$DOSSIER_INSTALL$SITE
 ZIP_SITE="cimep.zip"
 
-DOSSIER_NODE=$DOSSIER_INSTALL"crmtest-node"
+NODE="crmtest-node"
+DOSSIER_NODE=$DOSSIER_INSTALL$NODE
 ZIP_NODE="cimep-node.zip"
 
-DOSSIER_SCRIPT=$DOSSIER_INSTALL"crmtest-script"
+SCRIPT="crmtest-script"
+DOSSIER_SCRIPT=$DOSSIER_INSTALL$SCRIPT
 ZIP_SCRIPT="cimep-script.zip"
+
 
 CERTIFICATS="certificats.zip"
 PHPVERSION="7.3"
 SITE_NAME="crmtest.fr"
 
+####################################
+
+
+
 #1) Update + Installer Apache2, Node JS, PHP, postgresql :
 
 
-apt-get update && apt full-upgrade -y
+apt-get update && apt full-upgrade -qy
 
-apt install sudo lsb-release apt-transport-https ca-certificates software-properties-common -y
-apt install apache2 -y
-apt install  nodejs npm  -y
+apt install sudo lsb-release apt-transport-https ca-certificates software-properties-common -qy
+apt install apache2 -qy
+apt install  nodejs npm  -qy
 
 wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 apt update
-apt install unoconv zip acl pdftk -y
-apt install php$PHPVERSION -y
-apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,acpu,bz2,curl,mbstring,intl,json,common,gd,xml}} -y
+apt install unoconv zip acl pdftk -qy
+apt install php$PHPVERSION -qy
+apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,acpu,bz2,curl,mbstring,intl,json,common,gd,xml}} -qy
 
 
 #2) Extraire l'ensemble des fichiers dans un repertoire (exemple : /var/www/cime-p-node)
@@ -94,14 +102,15 @@ pm2 startup
 
 #4-a) Installation de postgresql :
 
-apt install postgresql -y
+apt install postgresql -qy
 
 
 #Par défault, root de postgresql n'a pas de mot de passe.
 # Demander à l'utilisateur de saisir le nouveau mot de passe
 
-echo "Entrez le nouveau mot de passe pour l'utilisateur root de PostgreSQL :"
-read -s new_password
+#echo "Entrez le nouveau mot de passe pour l'utilisateur root de PostgreSQL :"
+#read -s new_password
+new_password="12345678"
 
 # Définir le mot de passe en utilisant la commande psql
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '$new_password';"
@@ -172,9 +181,9 @@ echo "<VirtualHost *:80>
             ServerName      $SITE_NAME
             ServerAdmin     admin@$SITE_NAME
 
-            DocumentRoot /var/www/cime-p/public
+            DocumentRoot /var/www/$SITE/public
 
-            <Directory /var/www/cime-p/public>
+            <Directory /var/www/$SITE/public>
                     Options Indexes FollowSymLinks MultiViews
                     AllowOverride All
                     Order allow,deny
@@ -204,7 +213,7 @@ echo "<VirtualHost *:80>
            # SSLCertificateFile /etc/ssl/www/$SITE_NAME/cert.crt
            # SSLCertificateKeyFile /etc/ssl/www/$SITE_NAME/cert.key
            # SSLCertificateChainFile /etc/ssl/www/$SITE_NAME/fullchain.pem
-    </VirtualHost>" > /etc/apache2/sites-available/cime-p.conf
+    </VirtualHost>" > /etc/apache2/sites-available/$SITE.conf
 
 # Penser à insérer les certificats ssl dans /etc/ssl/www/
 #mkdir -p /etc/ssl/www/$SITE_NAME
@@ -214,13 +223,13 @@ echo "<VirtualHost *:80>
 a2enmod ssl
 a2enmod rewrite
 a2enmod headers
-a2ensite cime-p.conf
+a2ensite $SITE.conf
 systemctl restart apache2
 
 # Fixer les droits :
 
-chown -R www-data:www-data /var/www/cime-p
-chmod -R 775 /var/www/cime-p
+chown -R www-data:www-data /var/www/$SITE
+chmod -R 775 /var/www/$SITE
 
 # Rajouter la ligne suivante dans le fichier /etc/hosts (adapter l'url) :
 
