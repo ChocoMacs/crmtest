@@ -41,18 +41,18 @@ SITE_NAME="crmtest.fr"
 #1) Update + Installer Apache2, Node JS, PHP, postgresql :
 
 
-apt-get update && apt full-upgrade -qy
+apt-get update && apt full-upgrade -yqq
 
-apt install sudo lsb-release apt-transport-https ca-certificates software-properties-common -qy
-apt install apache2 -qy
-apt install  nodejs npm  -qy
+apt install sudo lsb-release apt-transport-https ca-certificates software-properties-common -yqq
+apt install apache2 -yqq
+apt install  nodejs npm  -yqq
 
 wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 apt update
-apt install unoconv zip acl pdftk -qy
-apt install php$PHPVERSION -qy
-apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,acpu,bz2,curl,mbstring,intl,json,common,gd,xml}} -qy
+apt install unoconv zip acl pdftk -yqq
+apt install php$PHPVERSION -yqq
+apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,acpu,bz2,curl,mbstring,intl,json,common,gd,xml}} -yqq
 
 
 #2) Extraire l'ensemble des fichiers dans un repertoire (exemple : /var/www/cime-p-node)
@@ -146,7 +146,7 @@ pm2 startup
 
 #4-a) Installation de postgresql :
 
-apt install postgresql -qy
+apt install postgresql -yqq
 
 
 #Par défault, root de postgresql n'a pas de mot de passe.
