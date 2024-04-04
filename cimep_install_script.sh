@@ -43,7 +43,7 @@ SITE_NAME="$SITE.fr"
 
 apt-get update && apt full-upgrade -yqq
 
-apt install sudo lsb-release apt-transport-https ca-certificates software-properties-common -yqq
+apt install sudo lsb-release apt-transport-https ca-certificates ssl-cert software-properties-common -yqq
 apt install apache2 -yqq
 apt install  nodejs npm  -yqq
 
@@ -60,7 +60,10 @@ apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,apcu,bz2,curl,mbstring,intl,j
 #tar -xf ./$CERTIFICATS -C /etc/apache2/
 
 mkdir -p /etc/apache2/certificat-conf
-openssl req -new -x509 -days 365 -noenc -out /etc/apache2/certificat-conf/$SITE.pem -keyout /etc/apache2/certificat-conf/$SITE.key
+cp /etc/ssl/private/ssl-cert-snakeoil.key /etc/apache2/certificat-conf/$SITE.key
+cp /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/apache2/certificat-conf/$SITE.pem
+
+#openssl req -new -x509 -days 365 -noenc -out /etc/apache2/certificat-conf/$SITE.pem -keyout /etc/apache2/certificat-conf/$SITE.key
 
 mkdir $DOSSIER_SITE
 unzip ./$ZIP_SITE -d $DOSSIER_SITE
