@@ -17,7 +17,7 @@ fi
 ######### VARIABLE ##############
 DOSSIER_INSTALL="/var/www/"
 
-SITE=$(echo "hostname")
+SITE=$(echo hostname)
 DOSSIER_SITE=$DOSSIER_INSTALL$SITE
 ZIP_SITE="cimep.zip"
 
@@ -52,7 +52,7 @@ sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/
 apt update
 apt install unoconv zip acl pdftk -yqq
 apt install php$PHPVERSION -yqq
-apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,acpu,bz2,curl,mbstring,intl,json,common,gd,xml}} -yqq
+apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,apcu,bz2,curl,mbstring,intl,json,common,gd,xml}} -yqq
 
 
 #2) Extraire l'ensemble des fichiers dans un repertoire (exemple : /var/www/cime-p-node)
