@@ -83,6 +83,16 @@ cd $DOSSIER_NODE
 cp config.json.dist config.json
 npm install
 
+echo "
+127.0.0.1       localhost
+127.0.0.1       crmtest2
+127.0.1.1       crmtest2
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+" > /etc/hosts
+
 
 echo '{
   "port": 8043,
@@ -126,19 +136,19 @@ MAILER_URL=smtp://localhost
 ###< symfony/swiftmailer-bundle ###
 
 APP_LOCALE=fr
-EMAIL_ERROR=admin@$SITE.fr
-MAILER_FROM=no-reply@$SITE.fr
+EMAIL_ERROR=admin@$SITE_NAME
+MAILER_FROM=no-reply@$SITE_NAME
 MAILER_SENDER=CIME-P
-HOST=$SITE.fr
-SERVER_NODE_LOCATION=app.$SITE.fr
+HOST=$SITE_NAME
+SERVER_NODE_LOCATION=app.$SITE_NAME
 SERVER_NODE_PASSWORD=null
-SERVER_FTP_LOCATION=ftp.$SITE.fr
-SERVER_FTP_FULL_ENABLE=true
+SERVER_FTP_LOCATION=ftp.$SITE_NAME
+SERVER_FTP_FULL_ENABLE=false
 DIR_FTP=/home/ftp
 DIR_LARGE_FILES=/var/www/$SITE/var/media/large_files
 DIR_DRC_AUTO=/var/www/$SITE/var/media/large_files
 DIR_DRM=/var/www/$SITE/var/media/drm
-UPDATE_CREDENTIAL=null
+UPDATE_CREDENTIAL='cime:12345678'
 " > $DOSSIER_SITE/.env
 
 #3-b) Installer le lanceur automatique :
@@ -163,7 +173,7 @@ pg_ctlcluster 15 main start
 
 #echo "Entrez le nouveau mot de passe pour l'utilisateur root de PostgreSQL :"
 #read -s new_password
-new_password="12345678"
+#new_password="12345678"
 
 # Définir le mot de passe en utilisant la commande psql
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '12345678';"
