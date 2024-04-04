@@ -16,8 +16,9 @@ fi
 
 ######### VARIABLE ##############
 DOSSIER_INSTALL="/var/www/"
+IP="192.168.86.144"
 
-SITE="crmtest2"
+SITE="crmtest"
 DOSSIER_SITE=$DOSSIER_INSTALL$SITE
 ZIP_SITE="cimep.zip"
 
@@ -85,8 +86,8 @@ npm install
 
 echo "
 127.0.0.1       localhost
-127.0.0.1       crmtest2
-127.0.1.1       crmtest2
+127.0.0.1       $SITE
+127.0.1.1       $SITE
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
@@ -102,7 +103,7 @@ echo '{
   "ssl_key": "/etc/apache2/certificat-conf/$SITE.key",
   "ssl_crt": "/etc/apache2/certificat-conf/$SITE.pem",
   "default_redirect": "https://$SITE_NAME",
-  "main_server_ip": "192.168.40.10"
+  "main_server_ip": "$IP"
 }' > config.json
 
 echo "
@@ -300,8 +301,7 @@ echo ""
 
 # Rajouter la ligne suivante dans le fichier /etc/hosts (adapter l'url) :
 
-echo "127.0.0.1   app.$SITE_NAME $SITE" > /etc/hosts
-echo "192.168.40.10   app.$SITE_NAME $SITE" >> /etc/hosts
+echo "$IP   $SITE_NAME $SITE" >> /etc/hosts
 # *Ceci afin que le mode de maintenance ne bloque pas les requêtes du serveur vers lui même*
 # Installation des dépendances requise pour cimep
 
