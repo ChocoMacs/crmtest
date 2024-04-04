@@ -115,7 +115,7 @@ APP_SECRET=23d7cb8ed593909b2bcd5836b8dc8a57
 # Format described at https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
 # For an SQLite database, use: 'sqlite:///%kernel.project_dir%/var/data.db'
 # Configure your db driver and server_version in config/packages/doctrine.yaml
-DATABASE_URL=pgsql://cime-p:12345678@192.168.40.10:5432/cime-p
+DATABASE_URL=pgsql://cime-p:12345678@127.0.0.1:5432/cime-p
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/swiftmailer-bundle ###
@@ -187,7 +187,7 @@ PSQL_VERSION=$(echo "ls /etc/postgresql/")
 
 echo "
 local all all scram-sha-256              # Autoriser tout les utilisateurs postgresql à se connecter avec un socket Unix
-host all all 192.168.40.10/32 scram-sha-256  # Autoriser tout les utilisateurs postgresql à se connecter en TCP-IP depuis la machine locale uniquement
+host all all 127.0.0.1/32 scram-sha-256  # Autoriser tout les utilisateurs postgresql à se connecter en TCP-IP depuis la machine locale uniquement
 host all all ::1/128 scram-sha-256       # Idem en version IPV6
 hostssl cime-p cime-p 0.0.0.0/0 scram-sha-256  # Autoriser seulement l'utilisateur cime-p à se connecter sur la base cime-p en TCP-IP protégé par SSL depuis l'exterieur. Nécessite de configurer le champ listen_address (voir ci-dessous)
 hostssl cime-p cime-p ::/0 scram-sha-256     # Idem en version IPV6
@@ -214,8 +214,9 @@ systemctl restart postgresql
 sed -i 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/7.3/apache2/php.ini
 sed -i 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/7.3/cli/php.ini
 
-
-
+echo ""
+echo "#### Modification php.ini OK ######"
+echo ""
 
 echo "<VirtualHost *:80>
 
@@ -277,25 +278,47 @@ a2enmod headers
 a2ensite $SITE.conf
 systemctl restart apache2.service
 
+echo ""
+echo "#### Restart APACHE OK ######"
+echo ""
+
 # Fixer les droits :
-chown -R www-data:www-data /var/www/$SITE
-chmod -R 775 /var/www/$SITE
+chown -R www-data:www-data /var/www
+chmod -R 775 /var/www
+
+echo ""
+echo "#### Modification droits /var/www OK ######"
+echo ""
 
 
 # Rajouter la ligne suivante dans le fichier /etc/hosts (adapter l'url) :
 
-echo "127.0.0.1   app.$SITE_NAME $SITE" >> /etc/hosts
-
+echo "127.0.0.1   app.$SITE_NAME $SITE" > /etc/hosts
+echo "192.168.40.10   app.$SITE_NAME $SITE" >> /etc/hosts
 # *Ceci afin que le mode de maintenance ne bloque pas les requêtes du serveur vers lui même*
 # Installation des dépendances requise pour cime-p
 
 cd $DOSSIER_SITE
 sudo -u www-data php composer.phar install --no-scripts
 
+echo ""
+echo "#### Modification php.ini OK ######"
+echo ""
+
+
 #Créer et configurer le .env
 sudo -u www-data php composer.phar dump-env prod
+
+echo ""
+echo "#### composer.phar + dump OK ######"
+echo ""
+
+
 sudo -u www-data nano .env.local.php
 
+echo ""
+echo "#### .env.local.php OK ######"
+echo ""
 
 # Se référer au chapitre 2 pour la correspondance des paramètres du fichier de configuration.
 #**Si une base de donnée existe déjà, il faut dès maintenant l'importer** (voir chapitre 3.2 - Importer une base de donnée sur une base vierge) lors de l'execution de la prochaine commande, ne pas importer les données de base (le choix sera proposé).  
@@ -303,5 +326,8 @@ sudo -u www-data nano .env.local.php
 
 sudo ./installer install
 
+echo ""
+echo "#### ./installer OK ######"
+echo ""
 
 ### FIN POUR TEST !! ###
