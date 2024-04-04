@@ -272,13 +272,13 @@ a2ensite $SITE.conf
 systemctl restart apache2.service
 
 # Fixer les droits :
-
 chown -R www-data:www-data /var/www/$SITE
 chmod -R 775 /var/www/$SITE
 
+
 # Rajouter la ligne suivante dans le fichier /etc/hosts (adapter l'url) :
 
-echo "127.0.0.1   $SITE_NAME $SITE" >> /etc/hosts
+echo "127.0.0.1   app.$SITE_NAME $SITE" >> /etc/hosts
 
 # *Ceci afin que le mode de maintenance ne bloque pas les requêtes du serveur vers lui même*
 # Installation des dépendances requise pour cime-p
@@ -288,7 +288,7 @@ sudo -u www-data php composer.phar install --no-scripts
 
 #Créer et configurer le .env
 sudo -u www-data php composer.phar dump-env prod
-#sudo -u www-data nano .env.local.php
+sudo -u www-data nano .env.local.php
 
 
 # Se référer au chapitre 2 pour la correspondance des paramètres du fichier de configuration.
