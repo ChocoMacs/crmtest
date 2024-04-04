@@ -55,7 +55,7 @@ apt install php$PHPVERSION -yqq
 apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,apcu,bz2,curl,mbstring,intl,json,common,gd,xml}} -yqq
 
 
-#2) Extraire l'ensemble des fichiers dans un repertoire (exemple : /var/www/cime-p-node)
+#2) Extraire l'ensemble des fichiers dans un repertoire (exemple : /var/www/cimep-node)
 
 #tar -xf ./$CERTIFICATS -C /etc/apache2/
 
@@ -115,7 +115,7 @@ APP_SECRET=23d7cb8ed593909b2bcd5836b8dc8a57
 # Format described at https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
 # For an SQLite database, use: 'sqlite:///%kernel.project_dir%/var/data.db'
 # Configure your db driver and server_version in config/packages/doctrine.yaml
-DATABASE_URL=pgsql://cime-p:12345678@127.0.0.1:5432/cime-p
+DATABASE_URL=pgsql://cimep:12345678@127.0.0.1:5432/cimep
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/swiftmailer-bundle ###
@@ -155,6 +155,7 @@ pm2 startup
 #4-a) Installation de postgresql :
 
 apt install postgresql -yqq
+pg_ctlcluster 15 main start
 
 
 #Par défault, root de postgresql n'a pas de mot de passe.
@@ -165,7 +166,7 @@ apt install postgresql -yqq
 new_password="12345678"
 
 # Définir le mot de passe en utilisant la commande psql
-sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '';"
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '12345678';"
 
 # Vérifier si la commande s'est exécutée avec succès
 if [ $? -eq 0 ]; then
@@ -186,8 +187,8 @@ fi
 PSQL_VERSION=$(echo "ls /etc/postgresql/")
 
 echo "
-hostssl cime-p          cime-p          0.0.0.0/0               scram-sha-256
-hostssl cime-p          cime-p          ::/0                    scram-sha-256
+hostssl cimep          cimep          0.0.0.0/0               scram-sha-256
+hostssl cimep          cimep          ::/0                    scram-sha-256
 " >> /etc/postgresql/15/main/pg_hba.conf
 
 
@@ -198,10 +199,10 @@ echo "listen_addresses = '*'" >> /etc/postgresql/15/main/postgresql.conf
 echo "password_encryption = scram-sha-256" >> /etc/postgresql/15/main/postgresql.conf
 systemctl restart postgresql
 
-## Création d'un nouvel utilisateur de base de donnée "cime-p" et sa base de donnée "cime-p"  
+## Création d'un nouvel utilisateur de base de donnée "cimep" et sa base de donnée "cimep"  
 
-   sudo -u postgres psql -c "CREATE USER cime-p WITH PASSWORD '12345678';"
-   sudo -u postgres psql -c "CREATE DATABASE cime-p ENCODING 'UTF8' OWNER cime-p TEMPLATE template0;"
+   sudo -u postgres psql -c "CREATE USER cimep WITH PASSWORD '12345678';"
+   sudo -u postgres psql -c "CREATE DATABASE cimep ENCODING 'UTF8' OWNER cimep TEMPLATE template0;"
 
 
 
@@ -293,7 +294,7 @@ echo ""
 echo "127.0.0.1   app.$SITE_NAME $SITE" > /etc/hosts
 echo "192.168.40.10   app.$SITE_NAME $SITE" >> /etc/hosts
 # *Ceci afin que le mode de maintenance ne bloque pas les requêtes du serveur vers lui même*
-# Installation des dépendances requise pour cime-p
+# Installation des dépendances requise pour cimep
 
 cd $DOSSIER_SITE
 sudo -u www-data php composer.phar install --no-scripts
