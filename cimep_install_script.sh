@@ -165,7 +165,7 @@ apt install postgresql -yqq
 new_password="12345678"
 
 # Définir le mot de passe en utilisant la commande psql
-sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '$new_password';"
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '';"
 
 # Vérifier si la commande s'est exécutée avec succès
 if [ $? -eq 0 ]; then
@@ -186,11 +186,8 @@ fi
 PSQL_VERSION=$(echo "ls /etc/postgresql/")
 
 echo "
-local all all scram-sha-256              # Autoriser tout les utilisateurs postgresql à se connecter avec un socket Unix
-host all all 127.0.0.1/32 scram-sha-256  # Autoriser tout les utilisateurs postgresql à se connecter en TCP-IP depuis la machine locale uniquement
-host all all ::1/128 scram-sha-256       # Idem en version IPV6
-hostssl cime-p cime-p 0.0.0.0/0 scram-sha-256  # Autoriser seulement l'utilisateur cime-p à se connecter sur la base cime-p en TCP-IP protégé par SSL depuis l'exterieur. Nécessite de configurer le champ listen_address (voir ci-dessous)
-hostssl cime-p cime-p ::/0 scram-sha-256     # Idem en version IPV6
+hostssl cime-p          cime-p          0.0.0.0/0               scram-sha-256
+hostssl cime-p          cime-p          ::/0                    scram-sha-256
 " >> /etc/postgresql/15/main/pg_hba.conf
 
 
@@ -203,8 +200,8 @@ systemctl restart postgresql
 
 ## Création d'un nouvel utilisateur de base de donnée "cime-p" et sa base de donnée "cime-p"  
 
-   sudo -u postgres psql -c "CREATE USER cime_p WITH PASSWORD '12345678';"
-   sudo -u postgres psql -c "CREATE DATABASE cime_p ENCODING 'UTF8' OWNER cime_p TEMPLATE template0;"
+   sudo -u postgres psql -c "CREATE USER cime-p WITH PASSWORD '12345678';"
+   sudo -u postgres psql -c "CREATE DATABASE cime-p ENCODING 'UTF8' OWNER cime-p TEMPLATE template0;"
 
 
 
