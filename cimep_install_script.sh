@@ -109,7 +109,7 @@ APP_SECRET=23d7cb8ed593909b2bcd5836b8dc8a57
 # Format described at https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
 # For an SQLite database, use: 'sqlite:///%kernel.project_dir%/var/data.db'
 # Configure your db driver and server_version in config/packages/doctrine.yaml
-DATABASE_URL=pgsql://db_user:db_password@127.0.0.1:5432/db_name
+DATABASE_URL=pgsql://cime-p:12345678@127.0.0.1:5432/cime-p
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/swiftmailer-bundle ###
