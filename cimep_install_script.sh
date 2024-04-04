@@ -17,22 +17,22 @@ fi
 ######### VARIABLE ##############
 DOSSIER_INSTALL="/var/www/"
 
-SITE="crmtest"
+SITE=$(echo "hostname")
 DOSSIER_SITE=$DOSSIER_INSTALL$SITE
 ZIP_SITE="cimep.zip"
 
-NODE="crmtest-node"
+NODE="$SITE-node"
 DOSSIER_NODE=$DOSSIER_INSTALL$NODE
 ZIP_NODE="cimep-node.zip"
 
-SCRIPT="crmtest-script"
+SCRIPT="$SITE-script"
 DOSSIER_SCRIPT=$DOSSIER_INSTALL$SCRIPT
 ZIP_SCRIPT="cimep-script.zip"
 
 
 CERTIFICATS="certificats.tar"
 PHPVERSION="7.3"
-SITE_NAME="crmtest.fr"
+SITE_NAME="$SITE.fr"
 
 ####################################
 
@@ -85,8 +85,8 @@ echo '{
   "ssl": true,
   "ssl_key": "/etc/apache2/certificat-conf/CRM-CIME-P_cime_g-inp_fr.key",
   "ssl_crt": "/etc/apache2/certificat-conf/crm-cime-p/crm-cime-p_cime_g-inp_fr.crt",
-  "default_redirect": "https://crmtest.fr",
-  "main_server_ip": "127.0.0.1"
+  "default_redirect": "https://$SITE.fr",
+  "main_server_ip": "192.168.40.10"
 }' > config.json
 
 echo "
@@ -120,18 +120,18 @@ MAILER_URL=smtp://localhost
 ###< symfony/swiftmailer-bundle ###
 
 APP_LOCALE=fr
-EMAIL_ERROR=admin@crmtest.fr
-MAILER_FROM=no-reply@crmtest.fr
+EMAIL_ERROR=admin@$SITE.fr
+MAILER_FROM=no-reply@$SITE.fr
 MAILER_SENDER=CIME-P
-HOST=crmtest.fr
-SERVER_NODE_LOCATION=app.crmtest.fr
+HOST=$SITE.fr
+SERVER_NODE_LOCATION=app.$SITE.fr
 SERVER_NODE_PASSWORD=null
-SERVER_FTP_LOCATION=ftp.crmtest.fr
+SERVER_FTP_LOCATION=ftp.$SITE.fr
 SERVER_FTP_FULL_ENABLE=true
 DIR_FTP=/home/ftp
-DIR_LARGE_FILES=/var/www/crmtest/var/media/large_files
-DIR_DRC_AUTO=/var/www/crmtest/var/media/large_files
-DIR_DRM=/var/www/crmtest/var/media/drm
+DIR_LARGE_FILES=/var/www/$SITE/var/media/large_files
+DIR_DRC_AUTO=/var/www/$SITE/var/media/large_files
+DIR_DRM=/var/www/$SITE/var/media/drm
 UPDATE_CREDENTIAL=null
 " > $DOSSIER_SITE/.env.local.php
 
