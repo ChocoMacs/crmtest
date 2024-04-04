@@ -17,7 +17,7 @@ fi
 ######### VARIABLE ##############
 DOSSIER_INSTALL="/var/www/"
 
-SITE=$(echo hostname)
+SITE="crmtest2"
 DOSSIER_SITE=$DOSSIER_INSTALL$SITE
 ZIP_SITE="cimep.zip"
 
@@ -57,7 +57,10 @@ apt install php{-cas,$PHPVERSION-{xmlrpc,zip,pgsql,apcu,bz2,curl,mbstring,intl,j
 
 #2) Extraire l'ensemble des fichiers dans un repertoire (exemple : /var/www/cime-p-node)
 
-tar -xf ./$CERTIFICATS -C /etc/apache2/
+#tar -xf ./$CERTIFICATS -C /etc/apache2/
+
+mkdir -p /etc/apache2/certificat-conf
+openssl req -new -x509 -days 365 -noenc -out /etc/apache2/certificat-conf/$SITE.pem -keyout /etc/apache2/certificat-conf/$SITE.key
 
 mkdir $DOSSIER_SITE
 unzip ./$ZIP_SITE -d $DOSSIER_SITE
@@ -83,9 +86,9 @@ echo '{
   "password": "218df0761c81d63cc75023b9ae2f4567c3a68f03",
   "verbose": "info",
   "ssl": true,
-  "ssl_key": "/etc/apache2/certificat-conf/CRM-CIME-P_cime_g-inp_fr.key",
-  "ssl_crt": "/etc/apache2/certificat-conf/crm-cime-p/crm-cime-p_cime_g-inp_fr.crt",
-  "default_redirect": "https://$SITE.fr",
+  "ssl_key": "/etc/apache2/certificat-conf/$SITE.key",
+  "ssl_crt": "/etc/apache2/certificat-conf/$SITE.pem",
+  "default_redirect": "https://$SITE_NAME",
   "main_server_ip": "192.168.40.10"
 }' > config.json
 
@@ -250,9 +253,9 @@ echo "<VirtualHost *:80>
             SSLSessionTickets       off
 
             SSLOptions +StrictRequire
-            SSLCertificateFile /etc/apache2/certificat-conf/crm-cime-p/crm-cime-p_cime_g-inp_fr.crt
-            SSLCertificateKeyFile /etc/apache2/certificat-conf/CRM-CIME-P_cime_g-inp_fr.key
-            SSLCertificateChainFile /etc/apache2/certificat-conf/crm-cime-p/DigiCertCA.crt
+            SSLCertificateFile /etc/apache2/certificat-conf/$SITE.pem
+            SSLCertificateKeyFile /etc/apache2/certificat-conf/$SITE.key
+            #SSLCertificateChainFile /etc/apache2/certificat-conf/$SITE.pem
             SSLProtocol all -SSLv2 -SSLv3
 
            # SSLCertificateFile /etc/ssl/www/$SITE_NAME/cert.crt
