@@ -112,7 +112,7 @@ APP_SECRET=23d7cb8ed593909b2bcd5836b8dc8a57
 # Format described at https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
 # For an SQLite database, use: 'sqlite:///%kernel.project_dir%/var/data.db'
 # Configure your db driver and server_version in config/packages/doctrine.yaml
-DATABASE_URL=pgsql://cime-p:12345678@127.0.0.1:5432/cime-p
+DATABASE_URL=pgsql://cime-p:12345678@192.168.40.10:5432/cime-p
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/swiftmailer-bundle ###
@@ -184,7 +184,7 @@ PSQL_VERSION=$(echo "ls /etc/postgresql/")
 
 echo "
 local all all scram-sha-256              # Autoriser tout les utilisateurs postgresql à se connecter avec un socket Unix
-host all all 127.0.0.1/32 scram-sha-256  # Autoriser tout les utilisateurs postgresql à se connecter en TCP-IP depuis la machine locale uniquement
+host all all 192.168.40.10/32 scram-sha-256  # Autoriser tout les utilisateurs postgresql à se connecter en TCP-IP depuis la machine locale uniquement
 host all all ::1/128 scram-sha-256       # Idem en version IPV6
 hostssl cime-p cime-p 0.0.0.0/0 scram-sha-256  # Autoriser seulement l'utilisateur cime-p à se connecter sur la base cime-p en TCP-IP protégé par SSL depuis l'exterieur. Nécessite de configurer le champ listen_address (voir ci-dessous)
 hostssl cime-p cime-p ::/0 scram-sha-256     # Idem en version IPV6
