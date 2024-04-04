@@ -140,7 +140,7 @@ EMAIL_ERROR=admin@$SITE_NAME
 MAILER_FROM=no-reply@$SITE_NAME
 MAILER_SENDER=CIME-P
 HOST=$SITE_NAME
-SERVER_NODE_LOCATION=app.$SITE_NAME
+SERVER_NODE_LOCATION=$SITE_NAME
 SERVER_NODE_PASSWORD=null
 SERVER_FTP_LOCATION=ftp.$SITE_NAME
 SERVER_FTP_FULL_ENABLE=false
@@ -267,7 +267,6 @@ echo "<VirtualHost *:80>
             SSLOptions +StrictRequire
             SSLCertificateFile /etc/apache2/certificat-conf/$SITE.pem
             SSLCertificateKeyFile /etc/apache2/certificat-conf/$SITE.key
-            #SSLCertificateChainFile /etc/apache2/certificat-conf/$SITE.pem
             SSLProtocol all -SSLv2 -SSLv3
 
            # SSLCertificateFile /etc/ssl/www/$SITE_NAME/cert.crt
