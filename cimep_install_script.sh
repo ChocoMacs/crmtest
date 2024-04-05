@@ -16,7 +16,7 @@ fi
 
 ######### VARIABLE ##############
 DOSSIER_INSTALL="/var/www/"
-IP="192.168.86.144"
+IP="192.168.40.10"
 
 SITE="crmtest"
 DOSSIER_SITE=$DOSSIER_INSTALL$SITE
