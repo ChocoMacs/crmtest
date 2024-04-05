@@ -17,7 +17,7 @@ fi
 ######### VARIABLE ##############
 DOSSIER_INSTALL="/var/www/"
 
-SITE="crmtest2"
+SITE="crmtest"
 DOSSIER_SITE=$DOSSIER_INSTALL$SITE
 ZIP_SITE="cimep.zip"
 
@@ -85,8 +85,8 @@ npm install
 
 echo "
 127.0.0.1       localhost
-127.0.0.1       crmtest2
-127.0.1.1       crmtest2
+127.0.0.1       $SITE
+127.0.1.1       $SITE
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
@@ -211,9 +211,10 @@ systemctl restart postgresql
 
 ## Création d'un nouvel utilisateur de base de donnée "cimep" et sa base de donnée "cimep"  
 
-   sudo -u postgres psql -c "CREATE USER cimep WITH PASSWORD '12345678';"
-   sudo -u postgres psql -c "CREATE DATABASE cimep ENCODING 'UTF8' OWNER cimep TEMPLATE template0;"
-
+sudo -u postgres psql -c "CREATE USER cimep WITH PASSWORD '12345678';"
+#   sudo -u postgres psql -c "CREATE DATABASE cimep ENCODING 'UTF8' OWNER cimep TEMPLATE template0;"
+sudo sed -i 's/mycmp/$SITE/g' ./Dump-2024-04-05.sql
+sudo psql -W -U cimep -h 127.0.0.1 -p 5432 cimep < ./Dump-2024-04-05.sql
 
 
 ## Modifier les deux php.ini /etc/php/X/apache2/php.ini et /etc/php/X/cli/php.ini
