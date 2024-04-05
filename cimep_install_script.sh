@@ -150,7 +150,7 @@ DIR_FTP=/home/ftp
 DIR_LARGE_FILES=/var/www/$SITE/var/media/large_files
 DIR_DRC_AUTO=/var/www/$SITE/var/media/large_files
 DIR_DRM=/var/www/$SITE/var/media/drm
-UPDATE_CREDENTIAL='cime:12345678'
+UPDATE_CREDENTIAL='cimep:12345678'
 " > $DOSSIER_SITE/.env
 
 #3-b) Installer le lanceur automatique :
