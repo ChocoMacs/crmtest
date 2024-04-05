@@ -94,6 +94,7 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 " > /etc/hosts
 
+hostnamectl hostname $SITE
 
 echo '{
   "port": 8043,
@@ -213,7 +214,7 @@ systemctl restart postgresql
 ## Création d'un nouvel utilisateur de base de donnée "cimep" et sa base de donnée "cimep"  
 
 sudo -u postgres psql -c "CREATE USER cimep WITH PASSWORD '12345678';"
-#   sudo -u postgres psql -c "CREATE DATABASE cimep ENCODING 'UTF8' OWNER cimep TEMPLATE template0;"
+sudo -u postgres psql -c "CREATE DATABASE cimep ENCODING 'UTF8' OWNER cimep"
 sudo sed -i 's/mycmp/$SITE/g' ./Dump-2024-04-05.sql
 sudo psql -W -U cimep -h 127.0.0.1 -p 5432 cimep < ./Dump-2024-04-05.sql
 
@@ -337,5 +338,7 @@ sudo ./installer install
 echo ""
 echo "#### ./installer OK ######"
 echo ""
+
+
 
 ### FIN POUR TEST !! ###
