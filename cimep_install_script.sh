@@ -137,7 +137,7 @@ DATABASE_URL=pgsql://cimep:12345678@127.0.0.1:5432/cimep
 MAILER_URL=smtp://localhost
 ###< symfony/swiftmailer-bundle ###
 
-APP_LOCALE=fr
+APP_LOCALE=en
 EMAIL_ERROR=admin@$SITE_NAME
 MAILER_FROM=no-reply@$SITE_NAME
 MAILER_SENDER=CIME-P
@@ -215,7 +215,7 @@ systemctl restart postgresql
 
 sudo -u postgres psql -c "CREATE USER cimep WITH PASSWORD '12345678';"
 sudo -u postgres psql -c "CREATE DATABASE cimep ENCODING 'UTF8' OWNER cimep"
-sudo sed -i 's/mycmp/$SITE/g' ./Dump-2024-04-05.sql
+sudo sed -i 's/mycmp/crmtest/g' ./Dump-2024-04-05.sql
 sudo psql -W -U cimep -h 127.0.0.1 -p 5432 cimep < ./Dump-2024-04-05.sql
 
 
