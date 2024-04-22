@@ -17,6 +17,7 @@ fi
 ######### VARIABLE ##############
 DOSSIER_INSTALL="/var/www/"
 IP="192.168.40.10"
+DUMP="DumpCRM.sql"
 
 SITE="crmtest"
 DOSSIER_SITE=$DOSSIER_INSTALL$SITE
@@ -37,6 +38,7 @@ SITE_NAME="$SITE.fr"
 
 ####################################
 
+[ -f ./$DUMP ]  || echo "$DUMP does not exist." && exit 1
 
 
 #1) Update + Installer Apache2, Node JS, PHP, postgresql :
@@ -215,8 +217,9 @@ systemctl restart postgresql
 
 sudo -u postgres psql -c "CREATE USER cimep WITH PASSWORD '12345678';"
 sudo -u postgres psql -c "CREATE DATABASE cimep ENCODING 'UTF8' OWNER cimep"
-sudo sed -i 's/mycmp/cimep/g' /root/crmtest/Dump-2024-04-05.sql
-sudo psql -W -U cimep -h 127.0.0.1 -p 5432 cimep < /root/crmtest/Dump-2024-04-05.sql
+sudo sed -i 's/OWNER TO mycmp/OWNER TO cimep/g' /root/crmtest/$DUMP
+sudo sed -i 's/Owner: mycmp/Owner: cimep/g' /root/crmtest/$DUMP
+sudo psql -W -U cimep -h 127.0.0.1 -p 5432 cimep < /root/crmtest/$DUMP
 
 
 ## Modifier les deux php.ini /etc/php/X/apache2/php.ini et /etc/php/X/cli/php.ini
